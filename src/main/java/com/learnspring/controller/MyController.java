@@ -1,5 +1,7 @@
 package com.learnspring.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,6 +39,13 @@ public class MyController {
 		System.out.println("In controller ");
 		empService.saveEmployee();
 		return "hello annotation";
+	}
+	
+	@RequestMapping(value = "/getAllEmployee", method = RequestMethod.GET, produces="application/json")
+	public @ResponseBody String getAllEmployee(){
+		
+		List<Employee> findAllEmployees = empService.findAllEmployees();
+		return findAllEmployees.toString();
 	}
 }
 
