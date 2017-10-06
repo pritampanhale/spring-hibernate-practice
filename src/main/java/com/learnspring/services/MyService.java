@@ -24,33 +24,27 @@ public class MyService {
 
 	@Autowired
 	MyBean mybean;
-	
+
 	@Autowired
 	private DatabaseChangeLogDao changeLogDao;
-	
-	public String getSomething(){
-		System.out.println(mybean.getBeanName());
-		return "This is something";
-	}
-	
+
+	@Autowired
+	private DocumentService documentService;
+
 	public String getDatabaseChangeLogDetails() throws JsonProcessingException {
 		List<Databasechangelog> databaseChangeLogDetails = changeLogDao.getDatabaseChangeLogDetails();
 		String jsonForm = JsonUtil.getJsonForm(databaseChangeLogDetails);
 		return jsonForm;
-		
+
 	}
-	
-	public void getChangeLogDetails(DatabasechangelogPK pk){
+
+	public void getChangeLogDetails(DatabasechangelogPK pk) {
 		Databasechangelog changeLogDetails = changeLogDao.getChangeLogDetails(pk);
 	}
-	
-	public void readChangeSetInformation(DatabasechangelogPK pk) throws Exception{
+
+	public String readChangeSetInformation(DatabasechangelogPK pk) throws Exception {
 		String baseProjectLocation = "C:/Users/pritam.panhale/workspace/testMaven/";
-		FileReader fr = new FileReader(new File(baseProjectLocation+pk.getFilename()));
-		BufferedReader br = new BufferedReader(fr);
-		String str = "";
-		while( (str = br.readLine())!=null){
-			System.out.println(str);
-		}
+		String tag = documentService.getTag(baseProjectLocation + pk.getFilename(),pk.getId(),pk.getAuthor());
+		return tag;
 	}
 }

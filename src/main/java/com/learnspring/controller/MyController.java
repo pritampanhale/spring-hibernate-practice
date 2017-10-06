@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.learnspring.model.DatabasechangelogPK;
 import com.learnspring.model.Employee;
+import com.learnspring.model.JsonForTag;
 import com.learnspring.services.EmployeeServiceImpl;
 import com.learnspring.services.MyService;
 import com.learnspring.util.JsonUtil;
@@ -28,12 +29,6 @@ public class MyController {
 		this.empService = empservice;
 	}
 
-	@RequestMapping(value = "/hello")
-	public @ResponseBody String testMethod(){
-		String something = myService.getSomething();
-		System.out.println("In controller " + something);
-		return "hello annotation";
-	}
 	
 	@RequestMapping(value = "/saveEmployee", method = RequestMethod.POST, consumes="application/json")
 	public @ResponseBody String saveEmployee(@RequestBody String emp){
@@ -61,10 +56,11 @@ public class MyController {
 	public @ResponseBody String viewChangeLogDetails(@RequestBody String emp) throws Exception{ 
 
 		DatabasechangelogPK objectFromJson = JsonUtil.getObjectFromJson(emp, DatabasechangelogPK.class);
-		myService.getChangeLogDetails(objectFromJson);
-		myService.readChangeSetInformation(objectFromJson);
+		//myService.getChangeLogDetails(objectFromJson);
+		String readChangeSetInformation = myService.readChangeSetInformation(objectFromJson);
+		JsonForTag tag = new JsonForTag("1", readChangeSetInformation);
 		
-		return "hello annotation";
+		return JsonUtil.getJsonForm(tag);
 	}
 }
 
