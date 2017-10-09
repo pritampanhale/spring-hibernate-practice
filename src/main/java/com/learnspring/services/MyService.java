@@ -16,6 +16,7 @@ import com.learnspring.bean.MyBean;
 import com.learnspring.dao.DatabaseChangeLogDao;
 import com.learnspring.model.Databasechangelog;
 import com.learnspring.model.DatabasechangelogPK;
+import com.learnspring.model.Tag;
 import com.learnspring.util.JsonUtil;
 
 @Service
@@ -46,5 +47,10 @@ public class MyService {
 		String baseProjectLocation = "C:/Users/pritam.panhale/workspace/testMaven/";
 		String tag = documentService.getTag(baseProjectLocation + pk.getFilename(),pk.getId(),pk.getAuthor());
 		return tag;
+	}
+	
+	public void updateTag(Tag tag){
+		
+		changeLogDao.setTag(tag);
 	}
 }

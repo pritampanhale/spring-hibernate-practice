@@ -2,6 +2,7 @@ package com.learnspring.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 public class JsonUtil {
 
@@ -16,5 +17,6 @@ public class JsonUtil {
 		ObjectMapper obj = new ObjectMapper();
 		return obj.readValue(str, clazz);
 	}
+	
 
 }

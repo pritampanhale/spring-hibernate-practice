@@ -13,6 +13,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.learnspring.model.DatabasechangelogPK;
 import com.learnspring.model.Employee;
 import com.learnspring.model.JsonForTag;
+import com.learnspring.model.Tag;
 import com.learnspring.services.EmployeeServiceImpl;
 import com.learnspring.services.MyService;
 import com.learnspring.util.JsonUtil;
@@ -56,11 +57,20 @@ public class MyController {
 	public @ResponseBody String viewChangeLogDetails(@RequestBody String emp) throws Exception{ 
 
 		DatabasechangelogPK objectFromJson = JsonUtil.getObjectFromJson(emp, DatabasechangelogPK.class);
-		//myService.getChangeLogDetails(objectFromJson);
 		String readChangeSetInformation = myService.readChangeSetInformation(objectFromJson);
 		JsonForTag tag = new JsonForTag("1", readChangeSetInformation);
 		
 		return JsonUtil.getJsonForm(tag);
+	}
+	
+	
+	@RequestMapping(value = "/tagChangeSet", method = RequestMethod.POST, consumes="application/json")
+	public @ResponseBody String tagChangeSet(@RequestBody String req) throws Exception{ 
+
+		Tag tag = JsonUtil.getObjectFromJson(req, Tag.class);
+		myService.updateTag(tag);
+		System.out.println("Tag updated successfully");
+		return "updated";
 	}
 }
 
