@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.learnspring.model.DatabasechangelogPK;
 import com.learnspring.model.Employee;
+import com.learnspring.model.GitObject;
 import com.learnspring.model.JsonForTag;
 import com.learnspring.model.Tag;
 import com.learnspring.services.EmployeeServiceImpl;
@@ -72,5 +73,26 @@ public class MyController {
 		System.out.println("Tag updated successfully");
 		return "updated";
 	}
+	
+	@RequestMapping(value = "/checkProjextDirectory", method = RequestMethod.POST, consumes="application/json")
+	public @ResponseBody Boolean checkProjectBaseDirectory(@RequestBody String dirName) throws Exception{ 
+		return myService.checkDirectory(dirName);
+	}
+	
+	
+	@RequestMapping(value = "/getBranches", method = RequestMethod.POST, consumes="application/json")
+	public @ResponseBody String getBranches(@RequestBody String dirName) throws Exception{ 
+		List<String> branches = myService.getBranches(dirName);
+		return JsonUtil.getJsonForm(branches);
+	}
+	
+	@RequestMapping(value = "/pullResource", method = RequestMethod.POST, consumes="application/json")
+	public @ResponseBody String pullResource(@RequestBody String gitObjectStr) throws Exception{
+		
+		GitObject gitObject = JsonUtil.getObjectFromJson(gitObjectStr, GitObject.class);
+		String pullResource = myService.pullResource(gitObject.getBaseDirectory(), gitObject.getBranchName());
+		return pullResource;
+	}
+	
 }
 
